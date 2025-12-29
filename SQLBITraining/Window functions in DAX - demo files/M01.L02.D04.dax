@@ -1,0 +1,18 @@
+﻿EVALUATE
+    VAR BrandsAndSales = 
+        ADDCOLUMNS ( 
+            ALL ( 'Product'[Brand] ),
+            "@Sales", [Sales Amount]
+        )
+    RETURN 
+        TOPN ( 
+            1,
+            TOPN ( 
+                2,
+                BrandsAndSales,
+                [@Sales], 
+                DESC
+            ),
+            [@Sales],
+            ASC
+        )

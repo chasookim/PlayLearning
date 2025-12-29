@@ -1,0 +1,16 @@
+﻿EVALUATE
+{
+    COUNTROWS (
+        GENERATEALL (
+            ALL ( Customer ),
+            SELECTCOLUMNS (
+                OFFSET (
+                    -1,
+                    ALL ( Customer ),
+                    ORDERBY ( Customer[CustomerKey] )
+                ),
+                "Previous Name", Customer[Name]
+            )
+        )
+    )
+}

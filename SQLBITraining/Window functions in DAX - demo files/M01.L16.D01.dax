@@ -1,0 +1,22 @@
+﻿DEFINE MEASURE Sales[RT Canonical] = 
+    SUMX (
+        FILTER ( 
+            ADDCOLUMNS ( 
+                ALL ( 'Date'[Date] ),
+                "@Amount", [Sales Amount]
+            ),
+            'Date'[Date] <= MAX ( 'Date'[Date] )
+        ),
+        [@Amount]
+    )
+MEASURE Sales[RT Canonical Calculate] = 
+    CALCULATE ( 
+        [Sales Amount],
+        DATESBETWEEN ( 'Date'[Date], BLANK (), MAX ( 'Date'[Date] ) )
+    )
+
+EVALUATE
+    SUMMARIZECOLUMNS (
+        'Date'[Date],
+        "Test", [RT Canonical]
+    )

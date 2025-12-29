@@ -1,0 +1,14 @@
+﻿EVALUATE
+VAR SourceTable2 =
+    SELECTCOLUMNS (
+        ALL ( 'Product'[Category] ),
+        "PrevCategory", 'Product'[Category],
+        "PrevAmount", [Sales Amount]
+    )
+RETURN
+    OFFSET (
+        -1,
+        SourceTable2,
+        ORDERBY ( [PrevAmount] )
+    )
+ORDER BY [PrevAmount]

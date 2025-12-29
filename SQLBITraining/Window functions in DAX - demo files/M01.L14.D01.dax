@@ -1,0 +1,13 @@
+﻿EVALUATE
+GENERATE (
+    SELECTCOLUMNS ( ALL ( 'Date'[Date] ), "D1", [Date] ),
+    GENERATE (
+        KEEPFILTERS (
+            SELECTCOLUMNS ( ALL ( 'Date'[Date] ), "D2", [Date] )
+        ),
+        OFFSET (
+            -1,
+            ALL ( 'Date'[Date] )
+        )
+    )
+)

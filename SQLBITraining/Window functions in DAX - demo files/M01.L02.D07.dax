@@ -1,0 +1,17 @@
+﻿EVALUATE
+VAR BrandsAndSales =
+    DISTINCT ( 
+    SELECTCOLUMNS (
+        ADDCOLUMNS (
+            ALL ( 'Product'[Brand] ),
+            "@Sales",
+                MROUND ( [Sales Amount], 1E6 )
+        ),
+        [@Sales]
+    ) )
+RETURN 
+    INDEX (
+        1,
+        BrandsAndSales,
+        ORDERBY ( [@Sales], DESC )
+    )

@@ -1,0 +1,23 @@
+﻿EVALUATE
+SUMMARIZECOLUMNS (
+    Customer[Continent],
+    TREATAS ( { 2018, 2019 }, 'Date'[Year] ),
+    "Sales", [Sales Amount],
+    "Sales PY",
+        SUMX (
+            OFFSET (
+                -1,
+                ADDCOLUMNS (
+                    SUMMARIZE ( 
+                        ALL ( Sales ), 
+                        Customer[Continent], 
+                        'Date'[Year]
+                    ),
+                    "@Sales", [Sales Amount] 
+                ),
+                ORDERBY ( Customer[Continent], ASC, 'Date'[Year], ASC ),
+                PARTITIONBY ( Customer[Continent] )
+            ),
+            [@Sales]
+        )
+)

@@ -1,0 +1,15 @@
+column,meaning
+date,Daily event date (2025)
+country,Market code: KR/JP/ANZ/TW/HK/SG
+channel,Sales channel: Direct/Distributor/Ecommerce/SupplyHouse
+segment,Customer segment: SMB/Mid/Enterprise
+campaign,Campaign bucket: A/B/C/None
+marketing_spend,"Daily spend in USD-equivalent (synthetic), includes seasonality/trend; contains some missing values"
+impressions,Ad impressions
+clicks,Ad clicks
+leads,Leads generated from clicks
+sales_calls,Sales calls (proxy for sales effort)
+discount_rate,Discount rate applied to deals (0~0.35)
+conversions,"1 if converted (deal won), else 0"
+revenue,Revenue amount (0 if not converted) with occasional outliers
+gross_margin,Gross margin amount (revenue * margin rate)

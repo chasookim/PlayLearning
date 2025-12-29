@@ -1,0 +1,24 @@
+﻿EVALUATE
+SUMMARIZECOLUMNS (
+    Product[Brand],
+    'Date'[Year],
+    "Sales", [Sales Amount],
+    "Sales First Year",
+        CALCULATE (
+            [Sales Amount],
+            INDEX (
+                1,
+                ALLSELECTED ( 'Date'[Year] )
+                ORDERBY ( 'Date'[Year] )
+            )
+        ),
+    "Sales Last Year",
+        CALCULATE (
+            [Sales Amount],
+            INDEX (
+                -1,
+                ALLSELECTED ( 'Date'[Year] )
+                ORDERBY ( 'Date'[Year] )
+            )
+        )
+)

@@ -1,0 +1,21 @@
+﻿DEFINE
+    MEASURE Sales[Previous Brand] =
+        VAR BrandsAndSales =
+            FILTER (
+                ADDCOLUMNS ( ALLSELECTED ( Product[Brand] ), "@Sales", [Sales Amount] ),
+                [@Sales] > 0
+            )
+        RETURN
+            CALCULATE (
+                [Sales Amount],
+                OFFSET ( -1, BrandsAndSales, ORDERBY ( [@Sales] ) )
+            )
+
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'[Brand],
+    FILTER ( ALL ( 'Product'[Brand] ), [Sales Amount] >= 1E6 ),
+    "Sales Amount", [Sales Amount],
+    "Previous Brand", [Previous Brand]
+)
+ORDER BY [Sales Amount]

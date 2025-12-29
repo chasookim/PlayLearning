@@ -1,0 +1,26 @@
+﻿DEFINE
+    MEASURE Sales[WIN FirstOrderOnly] =
+        AVERAGEX ( 
+            INDEX ( 
+                1, 
+                ORDERBY ( Sales[Order Number] ),
+                PARTITIONBY ( Sales[CustomerKey] ) 
+            ),
+            [Sales Amount]
+        )
+    MEASURE Sales[WIN AvgOtherOrders] =
+        AVERAGEX ( 
+            WINDOW ( 
+                 2, ABS,                         -- From the second row
+                -1, ABS,                         -- To the last one
+                ORDERBY ( Sales[Order Number] ), 
+                PARTITIONBY ( Sales[CustomerKey] ) 
+            ),
+            [Sales Amount]
+        )
+EVALUATE
+    SUMMARIZECOLUMNS (
+        Customer[Country],
+        "WIN First Order", [WIN FirstOrderOnly],
+        "WIN Avg Other Orders", [WIN AvgOtherOrders]
+    )

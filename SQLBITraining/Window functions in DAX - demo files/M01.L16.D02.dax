@@ -1,0 +1,26 @@
+﻿DEFINE
+    MEASURE Sales[RT Window] =
+        SUMX (
+            WINDOW (
+                0, ABS,
+                0, REL,
+                ADDCOLUMNS ( ALL ( 'Date'[Date] ), "@Amount", [Sales Amount] ),
+                ORDERBY ( 'Date'[Date], ASC )
+            ),
+            [@Amount]
+        )
+    MEASURE Sales[RT Window Calculate] =
+        CALCULATE (
+            [Sales Amount],
+            WINDOW ( 
+                0, ABS, 
+                0, REL, 
+                ALL ( 'Date'[Date] ), 
+                ORDERBY ( 'Date'[Date], ASC ) 
+            )
+        )
+EVALUATE
+SUMMARIZECOLUMNS ( 
+    'Date'[Date], 
+    "Test", [RT Window] 
+)

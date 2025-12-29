@@ -1,0 +1,20 @@
+﻿EVALUATE
+CALCULATETABLE (
+    ADDCOLUMNS (
+        SUMMARIZE ( Sales, Sales[Order Number], Sales[Order Date] ),
+        "Current Order", [Sales Amount],
+        "Previous Order",
+            CALCULATE (
+                [Sales Amount],
+                ALL ( Sales[Order Number], Sales[Order Date] ),
+                OFFSET (
+                    -1,
+                    SUMMARIZE ( Sales, Customer[Name], Sales[Order Number] ),
+                    ORDERBY ( Sales[Order Number] ),
+                    PARTITIONBY ( Customer[Name] )
+                )
+            )
+    ),
+    Customer[CustomerKey] IN { 1965868, 598137, 1631231 }
+)
+ORDER BY [Order Number]

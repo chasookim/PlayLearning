@@ -1,0 +1,39 @@
+﻿DEFINE
+    MEASURE Sales[DAX FirstOrderOnly] =
+        VAR CustomerFirstOrder =
+            TREATAS (
+                ADDCOLUMNS (
+                    VALUES ( Customer[CustomerKey] ),
+                    "@FirstOrder", CALCULATE ( MIN ( Sales[Order Number] ) )
+                ),
+                Sales[CustomerKey],
+                Sales[Order Number]
+            )
+        VAR Result =
+            CALCULATE (
+                DIVIDE ( [Sales Amount], COUNTROWS ( CustomerFirstOrder ) ),
+                CustomerFirstOrder
+            )
+        RETURN
+            Result
+    MEASURE Sales[DAX AvgOtherOrders] =
+        VAR CustomersAndOrders =
+            ADDCOLUMNS (
+                VALUES ( Customer[CustomerKey] ),
+                "@Sales", [Sales Amount],
+                "@Orders", CALCULATE ( DISTINCTCOUNT ( Sales[Order Number] ) ),
+                "@First", [DAX FirstOrderOnly]
+            )
+        VAR SalesOfNext = SUMX ( CustomersAndOrders, [@Sales] - [@First] )
+        VAR NumOfOrders = SUMX ( CustomersAndOrders, [@Orders] )
+        VAR NumOfCustomers = COUNTROWS ( GROUPBY ( CustomersAndOrders, Customer[CustomerKey] ) )
+        VAR Result = DIVIDE ( SalesOfNext, NumOfOrders - NumOfCustomers )
+        RETURN
+            Result
+
+EVALUATE
+SUMMARIZECOLUMNS (
+    Customer[Country],
+    "DAX First Order", [DAX FirstOrderOnly],
+    "DAX Avg Other Orders", [DAX AvgOtherOrders]
+)

@@ -1,0 +1,23 @@
+﻿EVALUATE
+    SUMMARIZECOLUMNS ( 
+        'Date'[Year],
+        'Date'[Month Number],
+        "Sales Amount", [Sales Amount],
+        "Sales YTD",
+            SUMX ( 
+                WINDOW (
+                     1, ABS,
+                     0, REL,
+                    ORDERBY ( 
+                        'Date'[Year Month Number], ASC, 
+                        'Date'[Year Month], ASC
+                    ),
+                    PARTITIONBY ( 'Date'[Year] )
+                ),
+                CALCULATE (
+                    [Sales Amount],
+                    ALLEXCEPT ( 'Date', 'Date'[Year], 'Date'[Year Month Number] )
+                )
+            )
+    )
+ORDER BY 'Date'[Year], 'Date'[Month Number]

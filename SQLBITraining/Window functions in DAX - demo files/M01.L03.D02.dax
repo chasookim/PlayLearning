@@ -1,0 +1,12 @@
+﻿EVALUATE
+    GENERATE ( 
+        VALUES ( Product[Category] ),
+        TOPN ( 
+            1,
+            ADDCOLUMNS ( 
+                ALL ( 'Product'[Brand] ),
+                "@Sales", [Sales Amount]
+            ),
+            [@Sales], DESC
+        )
+    )

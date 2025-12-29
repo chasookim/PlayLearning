@@ -1,0 +1,26 @@
+﻿DEFINE
+    MEASURE Sales[Rounded Sales] = MROUND ( [Sales Amount], 1E5 )
+
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Product'[Brand],
+    "Rounded Sales", [Rounded Sales],
+    "Rank Dense",
+        RANK (
+            DENSE,
+            ALLSELECTED ( 'Product'[Brand] ),
+            ORDERBY ( [Rounded Sales], DESC )
+        ),
+    "Rank Skip",
+        RANK (
+            SKIP,
+            ALLSELECTED ( 'Product'[Brand] ),
+            ORDERBY ( [Rounded Sales], DESC )
+        ),
+    "Row Number",
+        ROWNUMBER (
+            ALLSELECTED ( 'Product'[Brand] ),
+            ORDERBY ( [Rounded Sales], DESC )
+        )
+)
+ORDER BY [Rank Dense]

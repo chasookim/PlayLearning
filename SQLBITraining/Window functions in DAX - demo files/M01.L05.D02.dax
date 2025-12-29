@@ -1,0 +1,20 @@
+﻿EVALUATE
+GENERATE (
+    SUMMARIZE (
+        Sales,
+        Product[Brand],
+        'Date'[Year]
+    ),
+    ROW (
+        "Sales", [Sales Amount],
+        "Sales Prev Year",
+            CALCULATE (
+                [Sales Amount],
+                OFFSET (
+                    -1,
+                    ORDERBY ( 'Date'[Year] )
+                )
+            )
+    )
+)
+ORDER BY [Brand], [Year]

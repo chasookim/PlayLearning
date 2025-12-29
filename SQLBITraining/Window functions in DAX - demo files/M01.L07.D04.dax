@@ -1,0 +1,24 @@
+﻿DEFINE
+    MEASURE Sales[Prev Year Sales] =
+        CALCULATE ( 
+            [Sales Amount], 
+            OFFSET ( 
+                -1, 
+                ALLSELECTED ( 'Date'[Year] ),
+                ORDERBY ( 'Date'[Year], ASC ) 
+            ) 
+        )
+    MEASURE Sales[Prev Year Sales Time Int] =
+        CALCULATE ( 
+            [Sales Amount], 
+            SAMEPERIODLASTYEAR ( 'Date'[Date] )
+        )
+
+EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'[Year],
+    TREATAS ( { 2018, 2020 }, 'Date'[Year] ),
+    "Sales Amount", [Sales Amount],
+    "Prev Year Sales", [Prev Year Sales],
+    "Prev Year Sales Time Int", [Prev Year Sales Time Int]
+)

@@ -1,0 +1,22 @@
+﻿EVALUATE
+VAR OriginalTable =
+    ADDCOLUMNS (
+        ALL ( 'Product'[Category] ),
+        "Amount", [Sales Amount]
+    )
+VAR SourceTable2 =
+    SELECTCOLUMNS (
+        ALL ( 'Product'[Category] ),
+        "PrevCategory", 'Product'[Category],
+        "PrevAmount", [Sales Amount]
+    )
+RETURN
+    GENERATEALL (
+        OriginalTable,
+        OFFSET (
+            -1,
+            SourceTable2,
+            ORDERBY ( [PrevAmount] )
+        )
+    )
+ORDER BY [Amount]

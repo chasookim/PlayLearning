@@ -1,0 +1,19 @@
+﻿DEFINE
+    VAR Test =
+        SELECTCOLUMNS (
+            VALUES ( Customer[CustomerKey] ),
+            "Number", [CustomerKey]
+        )
+
+EVALUATE
+GENERATE (
+    Test,
+    SELECTCOLUMNS (
+        INDEX (
+            1,
+            Test,
+            ORDERBY ( [Number] )
+        ),
+        "First", [Number]
+    )
+)

@@ -1,0 +1,33 @@
+﻿EVALUATE
+SUMMARIZECOLUMNS (
+    'Date'[Year],
+    'Date'[Month Number],
+    "Sales Amount", [Sales Amount],
+    "Sales RT",
+        VAR SourceTable =
+            ADDCOLUMNS (
+                ALLSELECTED ( 'Date'[Year], 'Date'[Month Number] ),
+                "@Sales",
+                    CALCULATE (
+                        [Sales Amount],
+                        ALLEXCEPT (
+                            'Date',
+                            'Date'[Year], 
+                            'Date'[Month Number]
+                        )
+                    )
+            ) 
+        RETURN
+            SUMX (
+                WINDOW (
+                    1,  ABS,
+                    0,  REL,
+                    SourceTable,
+                    ORDERBY ( 'Date'[Year], ASC, 'Date'[Month Number], ASC )
+                ),
+                [@Sales]
+            )
+)
+ORDER BY
+    'Date'[Year],
+    'Date'[Month Number]

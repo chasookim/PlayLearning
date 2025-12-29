@@ -1,0 +1,13 @@
+﻿EVALUATE
+ADDCOLUMNS (
+    ALL ( 'Date'[Year] ),
+    "Sales", [Sales Amount],
+    "Sales PY",
+        CALCULATE (
+            [Sales Amount],
+            OFFSET (
+                -1,
+                ORDERBY ( 'Date'[Year] )
+            )
+        )
+)

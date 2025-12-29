@@ -1,0 +1,12 @@
+﻿DEFINE
+    VAR Test =
+        SELECTCOLUMNS ( { 1, 2, 3 }, "Number", [Value] )
+
+EVALUATE
+GENERATE (
+    Test,
+    SELECTCOLUMNS (
+        INDEX ( 1, DISTINCT ( Test ), ORDERBY ( [Number] ) ),
+        "First", [Number]
+    )
+)
